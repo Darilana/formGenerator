@@ -1,10 +1,12 @@
 <template>
         <v-card>
             <v-card-text>
-                <v-form>
+                <v-form ref="form">
                     <v-text-field
                             label="Title"
                             v-model="title"
+                            :rules="titleRules"
+                            required
                     ></v-text-field>
                     <div class="text-xs-center">
                         <v-menu offset-y>
@@ -72,6 +74,9 @@
         data () {
             return {
                 title: '',
+                titleRules: [
+                    v => !!v || 'Name is required',
+                ],
                 questionTypes: [
                     {
                         title: 'text'
@@ -117,10 +122,11 @@
                 }
             },
             submit () {
-                const savedQuestions = JSON.stringify({content: this.storedForm, title: this.title});
-                this.url = '/#/user/' + btoa(savedQuestions);
-                this.dialog = true;
-
+                if (this.$refs.form.validate()) {
+                    const savedQuestions = JSON.stringify({content: this.storedForm, title: this.title});
+                    this.url = '/#/user/' + encodeURIComponent(savedQuestions);
+                    this.dialog = true;
+                }
             }
         }
     }

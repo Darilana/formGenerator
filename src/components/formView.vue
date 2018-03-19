@@ -43,7 +43,7 @@
             }
         },
         mounted: function () {
-            this.formParams = JSON.parse(atob(this.$route.params.formParams));
+            this.formParams = JSON.parse(decodeURIComponent(this.$route.params.formParams));
         },
         methods: {
             submit () {
